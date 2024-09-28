@@ -32,7 +32,7 @@ jobs:
     - name: Restart PM2 App
       run: |
         pm2 stop all          # Stop all running instances of your app (use 'stop <app_name>' for a specific one)
-        pm2 start dist/index.js --name my-app  # Restart the app using PM2
+        pm2 start dist/index.js  # Restart the app using PM2
         pm2 save              # Save PM2 list (so it persists after reboot)
 
     # Step 5: Verify that the app is running
