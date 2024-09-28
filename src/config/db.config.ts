@@ -9,7 +9,13 @@ const sequelize = new Sequelize(
   process.env.DB_PASSWORD as string,
   {
     host: process.env.DB_HOST,
-    dialect: process.env.DB_DIALECT as any // Use 'mysql' | 'postgres' depending on your dialect
+    dialect: process.env.DB_DIALECT as any, // Use 'mysql' | 'postgres' depending on your dialect
+    dialectOptions: {
+      ssl: {
+        require: true, // This will help you. But you will see nwe error
+        rejectUnauthorized: false // This line will fix new error
+      }
+    },
   }
 );
 
