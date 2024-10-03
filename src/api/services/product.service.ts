@@ -1,40 +1,33 @@
-import { Product } from '../models';
-import { Category } from '../models';
-import { ProductAttributes } from '../models/product.model';
+import Product from "../../db/models/product.model";
+import { ProductAttributes } from "../interfaces/product.attributes";
 
 class ProductService {
-  // Create a new product
-  async createProduct(data: ProductAttributes) {
-    return Product.create(data);
+
+  public async create(productData: ProductAttributes): Promise<ProductAttributes> {
+    const product = await Product.create(productData);
+    return product;
   }
 
-  // Get all products with category data
-  async getAllProducts() {
-    return Product.findAll({ include: 'category' });
+  // Get all products
+  public async getAll(): Promise<ProductAttributes[]> {
+    return Product.findAll();
   }
 
   // Get a product by ID
-  async getProductById(id: number) {
-    return Product.findByPk(id, { include: 'category' });
+  public async getById(id: number): Promise<ProductAttributes | null> {
+    return Product.findByPk(id);
   }
 
   // Update a product by ID
-  async updateProduct(id: number, data: Partial<ProductAttributes>) {
-    const product = await Product.findByPk(id);
-    if (!product) {
-      throw new Error('Product not found');
-    }
-    return product.update(data);
+  public async update(id: number, productData: ProductAttributes): Promise<ProductAttributes | null> {
+    const [updated] = await Product.update(productData, { where: { id } });
+    return updated ? this.getById(id) : null;
   }
 
   // Delete a product by ID
-  async deleteProduct(id: number) {
-    const product = await Product.findByPk(id);
-    if (!product) {
-      throw new Error('Product not found');
-    }
-    return product.destroy();
+  public async delete(id: number): Promise<number> {
+    return Product.destroy({ where: { id } });
   }
 }
 
-export default new ProductService();
+export default ProductService;

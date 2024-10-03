@@ -1,56 +1,74 @@
+// src/controllers/productController.ts
 import { Request, Response } from 'express';
-import productService from '../services/product.service';
+import ProductService from '../services/product.service';
+import { ProductAttributes } from '../interfaces/product.attributes';
+import productSchema from '../validators/product.validator';
 
-// Create a new Product
-export const createProduct = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const product = await productService.createProduct(req.body);
-    res.status(201).json(product);
-  } catch (err) {
-    res.status(500).json({ error: (err as Error).message });
+
+class ProductController {
+  private productService: ProductService;
+
+  constructor() {
+    this.productService = new ProductService();
   }
-};
+  
 
-// Get all Products with Category
-export const getAllProducts = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const products = await productService.getAllProducts();
-    res.json(products);
-  } catch (err) {
-    res.status(500).json({ error: (err as Error).message });
-  }
-};
-
-// Get Product by ID
-export const getProductById = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const product = await productService.getProductById(Number(req.params.id));
-    if (!product) {
-      res.status(404).json({ error: 'Product not found' });
-    } else {
-      res.json(product);
+  // Create a new product
+  public createProduct = async (req: Request, res: Response) => {
+    const { error } = await productSchema.validateAsync(req.body);
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
     }
-  } catch (err) {
-    res.status(500).json({ error: (err as Error).message });
-  }
-};
+    try {
+      const product: ProductAttributes = await this.productService.create(req.body);
+      res.status(201).json(product);
+    } catch (err:any) {
+      res.status(500).json({ error: err.message });
+    }
+  };
 
-// Update Product
-export const updateProduct = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const product = await productService.updateProduct(Number(req.params.id), req.body);
-    res.json(product);
-  } catch (err) {
-    res.status(500).json({ error: (err as Error).message });
-  }
-};
+  // Get all products
+  public getAllProducts = async (req: Request, res: Response) => {
+    try {
+      const products: ProductAttributes[] = await this.productService.getAll();
+      res.json(products);
+    } catch (err:any) {
+      res.status(500).json({ error: err.message });
+    }
+  };
 
-// Delete Product
-export const deleteProduct = async (req: Request, res: Response): Promise<void> => {
-  try {
-    await productService.deleteProduct(Number(req.params.id));
-    res.json({ message: 'Product deleted' });
-  } catch (err) {
-    res.status(500).json({ error: (err as Error).message });
-  }
-};
+  // Get a product by ID
+  public getProductById = async (req: Request, res: Response) => {
+    try {
+      const product: ProductAttributes | null = await this.productService.getById(Number(req.params.id));
+      if (!product) return res.status(404).json({ error: 'Product not found' });
+      res.json(product);
+    } catch (err:any) {
+      res.status(500).json({ error: err.message });
+    }
+  };
+
+  // Update a product by ID
+  public updateProduct = async (req: Request, res: Response) => {
+    try {
+      const product: ProductAttributes | null = await this.productService.update(Number(req.params.id), req.body);
+      if (!product) return res.status(404).json({ error: 'Product not found' });
+      res.json(product);
+    } catch (err:any) {
+      res.status(500).json({ error: err.message });
+    }
+  };
+
+  // Delete a product by ID
+  public deleteProduct = async (req: Request, res: Response) => {
+    try {
+      const deletedCount: number = await this.productService.delete(Number(req.params.id));
+      if (!deletedCount) return res.status(404).json({ error: 'Product not found' });
+      res.status(204).send();
+    } catch (err:any) {
+      res.status(500).json({ error: err.message });
+    }
+  };
+}
+
+export default ProductController;
