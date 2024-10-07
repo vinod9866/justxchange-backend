@@ -1,11 +1,12 @@
 import Joi from 'joi';
 
 const productSchema = Joi.object({
-  id: Joi.number().optional(), // Optional as it may not be provided during creation
+  productId: Joi.number().optional(), // Optional as it may not be provided during creation
   productName: Joi.string().trim().required().messages({
     'string.empty': 'Product name is required',
     'any.required': 'Product name is required',
   }),
+  description: Joi.string().optional(),
   amount: Joi.number().greater(0).required().messages({
     'number.base': 'Amount must be a number',
     'number.greater': 'Amount must be greater than zero',

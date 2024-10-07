@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import productRouter from './api/routes/product.routes';
 import categoryRoutes from './api/routes/category.routes';
+import imageRoutes from './api/routes/image.routes';
 import initializeModels from './db/models';
 const swaggerDocument = require('./api/docs/swagger-output.json');
 const swaggerUi = require('swagger-ui-express');
@@ -19,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api', productRouter);
 app.use('/api', categoryRoutes);
+app.use('/api', imageRoutes);
 
 
 // Error handling middleware

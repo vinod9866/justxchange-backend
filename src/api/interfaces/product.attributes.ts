@@ -1,6 +1,7 @@
 export interface ProductAttributes {
-    id?: number;
+    productId?: number;
     productName: string;
+    description: string;
     amount: number;
     categoryId: number;
     userId: number;

@@ -5,11 +5,12 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.createTable('categories', {
-      id: {
+      categoryId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
+        field:'category_id'
       },
       name: {
         type: Sequelize.STRING,
@@ -34,7 +35,7 @@ module.exports = {
       updatedBy: {
         type: Sequelize.BIGINT,
         allowNull: false,
-        field: 'update_by',
+        field: 'updated_by',
       },
     });
   },

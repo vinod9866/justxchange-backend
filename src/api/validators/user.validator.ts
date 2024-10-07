@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
 const userSchema = Joi.object({
-  id: Joi.number().optional(), // Optional as it may not be provided during creation
+  userId: Joi.number().optional(), // Optional as it may not be provided during creation
   firstName: Joi.string().trim().required().messages({
     'string.empty': 'First name is required',
     'any.required': 'First name is required',

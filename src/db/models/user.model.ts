@@ -3,7 +3,7 @@ import sequelize from '../../config/db.config';
 import { BaseAttributes, commonFields } from './base.model';
 
 export interface UserAttributes extends BaseAttributes {
-    id?: number;
+    userId?: number;
     firstName: string;
     lastName: string;
     email: string;
@@ -15,7 +15,7 @@ export interface UserAttributes extends BaseAttributes {
 }
 
 class User extends Model<UserAttributes> implements UserAttributes {
-    public id!: number;
+    public userId!: number;
     public firstName!: string;
     public lastName!: string;
     public email!: string;
@@ -36,7 +36,7 @@ class User extends Model<UserAttributes> implements UserAttributes {
 // Initialize User model
 User.init(
     {
-        id: {
+        userId: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
@@ -89,6 +89,7 @@ User.init(
     {
         sequelize,
         tableName: 'Users',
+        timestamps: false,
     }
 );
 

@@ -5,8 +5,9 @@ import { commonFields } from './base.model';
 import Category from './category.model';
 
 class Product extends Model<ProductAttributes> implements ProductAttributes {
-  public id!: number;
+  public productId!: number;
   public productName!: string;
+  public description!:string;
   public amount!: number;
   public categoryId!: number;
   public userId!: number;
@@ -30,10 +31,16 @@ class Product extends Model<ProductAttributes> implements ProductAttributes {
 // Initialize Product model
 Product.init(
   {
-    id: {
+    productId: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+      field: 'product_id'
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      field: 'description'
     },
     productName: {
       type: DataTypes.STRING,
@@ -50,7 +57,7 @@ Product.init(
       allowNull: false,
       references: {
         model: 'categories',
-        key: 'id',
+        key: 'category_id',
       },
       field: 'category_id',
     },
@@ -59,7 +66,7 @@ Product.init(
       allowNull: false,
       references: {
         model: 'users',  // Reference the 'users' table
-        key: 'id',
+        key: 'user_id',
       },
       field: 'user_id',
     },
@@ -77,8 +84,8 @@ Product.init(
   {
     sequelize,
     tableName: 'products',  // Table name in snake_case
-    timestamps: true,  // If you want createdAt and updatedAt fields
-    underscored: true,  // Convert all fields to snake_case automatically
+    timestamps: false,  // If you want createdAt and updatedAt fields
+    // underscored: true,  // Convert all fields to snake_case automatically
   }
 );
 

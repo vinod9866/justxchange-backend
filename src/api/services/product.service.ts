@@ -19,14 +19,14 @@ class ProductService {
   }
 
   // Update a product by ID
-  public async update(id: number, productData: ProductAttributes): Promise<ProductAttributes | null> {
-    const [updated] = await Product.update(productData, { where: { id } });
-    return updated ? this.getById(id) : null;
+  public async update(userId: number, productData: ProductAttributes): Promise<ProductAttributes | null> {
+    const [updated] = await Product.update(productData, { where: { userId } });
+    return updated ? this.getById(userId) : null;
   }
 
   // Delete a product by ID
-  public async delete(id: number): Promise<number> {
-    return Product.destroy({ where: { id } });
+  public async delete(userId: number): Promise<number> {
+    return Product.destroy({ where: { userId } });
   }
 }
 

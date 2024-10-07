@@ -4,19 +4,22 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.createTable('products', {
-      id: {
+      product_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
+        field:'product_id'
       },
       product_name: {
         type: Sequelize.STRING,
         allowNull: false,
+        field:'product_name'
       },
       description: {
         type: Sequelize.STRING,
         allowNull: false,
+        field:'description'
       },
       amount: {
         type: Sequelize.FLOAT,
@@ -27,7 +30,7 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'categories',  // Foreign key references categories table
-          key: 'id',
+          key: 'category_id',
         },
         onDelete: 'CASCADE',  // Optional: Define behavior on delete
       },
@@ -36,7 +39,7 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'users',  // Foreign key references categories table
-          key: 'id',
+          key: 'user_id',
         },
         onDelete: 'CASCADE',  // Optional: Define behavior on delete
       },
@@ -66,7 +69,7 @@ module.exports = {
       updatedBy: {
         type: Sequelize.BIGINT,
         allowNull: false,
-        field: 'update_by',
+        field: 'updated_by',
       },
     });
   },
