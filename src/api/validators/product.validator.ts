@@ -25,7 +25,7 @@ const productSchema = Joi.object({
     'any.required': 'User ID is required',
   }),
   images: Joi.array().items(Joi.string().uri()).optional(), // Optional array of image URLs
-  condition: Joi.string().valid('new', 'used').required().messages({
+  condition: Joi.string().required().messages({
     'any.only': 'Condition must be either "new" or "used"',
     'any.required': 'Condition is required',
   }),

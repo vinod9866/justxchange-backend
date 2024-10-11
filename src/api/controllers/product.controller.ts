@@ -16,9 +16,9 @@ class ProductController {
 
   // Create a new product
   public createProduct = async (req: Request, res: Response) => {
-    const { error } = await productSchema.validateAsync(req.body);
+    const { error } = productSchema.validate(req.body);
     if (error) {
-      return res.status(400).json(createResponse(true, error.details[0].message));
+        return res.status(400).json({ error: error.details[0].message });
     }
     try {
       const product: ProductAttributes = await this.productService.create(req.body);
