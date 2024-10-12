@@ -5,8 +5,8 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "tsc --build && cp -R src/api/docs dist/api",
-        "start": "node ./dist/index.js",
-        "dev": " nodemon ./src/index.ts",
+        "start": "node ./dist/server.js",
+        "dev": " nodemon ./src/server.ts",
         "migration:dev": "npx sequelize db:migrate --env dev",
         "migration:prod": "npx sequelize db:migrate --env prod",
         "migration:dev:undo": "npx sequelize db:migrate:undo --env dev",
@@ -26,6 +26,7 @@
         "@types/multer": "^1.4.12",
         "@types/sequelize": "^4.28.20",
         "aws-sdk": "^2.1691.0",
+        "cors": "^2.8.5",
         "dotenv": "^16.4.5",
         "express": "^4.21.0",
         "joi": "^17.13.3",
@@ -40,6 +41,7 @@
         "swagger-ui-express": "^5.0.1"
     },
     "devDependencies": {
+        "@types/cors": "^2.8.17",
         "@types/express": "^4.17.21",
         "@types/node": "^22.7.5",
         "eslint-config-prettier": "^9.1.0",
