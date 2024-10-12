@@ -1,39 +1,36 @@
-import Category from "../../db/models/category.model";
-import { CategoryAttributes } from "../interfaces/category.attributes";
+import { PrismaClient } from '@prisma/client';
+import { ICategory } from '../interfaces';
 
-class CategoryService {
-  // Create a new category
-  public async create(categoryData: CategoryAttributes): Promise<CategoryAttributes> {
-    const category = await Category.create(categoryData);
-    return category;
-  }
+const prisma = new PrismaClient();
 
-  // Get all categories
-  public async getAll(): Promise<CategoryAttributes[]> {
-    return await Category.findAll();
-  }
+export const categoryService = {
+    createCategory: async (categoryData: ICategory) => {
+        const category = await prisma.category.create({
+            data: categoryData,
+        });
+        return category;
+    },
 
-  // Get category by ID
-  public async getById(id: number): Promise<CategoryAttributes | null> {
-    return await Category.findByPk(id);
-  }
+    getAllCategories: async () => {
+        return await prisma.category.findMany();
+    },
 
-  // Update category by ID
-  public async update(id: number, categoryData: CategoryAttributes): Promise<CategoryAttributes | null> {
-    const category = await Category.findByPk(id);
-    if (!category) return null;
+    getCategoryById: async (id: number) => {
+        return await prisma.category.findUnique({
+            where: { categoryId: id },
+        });
+    },
 
-    await category.update(categoryData);
-    return category;
-  }
+    updateCategory: async (id: number, categoryData: any) => {
+        return await prisma.category.update({
+            where: { categoryId: id },
+            data: categoryData,
+        });
+    },
 
-  // Delete category by ID
-  public async delete(id: number): Promise<void> {
-    const category = await Category.findByPk(id);
-    if (category) {
-      await category.destroy();
-    }
-  }
-}
-
-export default CategoryService;
+    deleteCategory: async (id: number) => {
+        await prisma.category.delete({
+            where: { categoryId: id },
+        });
+    },
+};

@@ -4,37 +4,36 @@
 name: Node.js CI
 
 on:
-  push:
-    branches: [ "main", "dev" ]
-  pull_request:
-    branches: [ "main", "dev" ]
+    push:
+        branches: ['main', 'dev']
+    pull_request:
+        branches: ['main', 'dev']
 
 jobs:
-  build:
+    build:
+        runs-on: self-hosted
 
-    runs-on: self-hosted
+        strategy:
+            matrix:
+                node-version: [18.x]
+                # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
-    strategy:
-      matrix:
-        node-version: [18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        steps:
+            - uses: actions/checkout@v4
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: 'npm'
+            - run: npm ci
+            - run: npm run build --if-present
 
-    steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
+            - name: Restart PM2 App
+              run: |
+                  pm2 stop all          # Stop all running instances of your app (use 'stop <app_name>' for a specific one)
+                  pm2 start dist/index.js  # Restart the app using PM2
+                  pm2 save              # Save PM2 list (so it persists after reboot)
 
-    - name: Restart PM2 App
-      run: |
-        pm2 stop all          # Stop all running instances of your app (use 'stop <app_name>' for a specific one)
-        pm2 start dist/index.js  # Restart the app using PM2
-        pm2 save              # Save PM2 list (so it persists after reboot)
-
-    # Step 5: Verify that the app is running
-    - name: Verify PM2 Process
-      run: pm2 list
+            # Step 5: Verify that the app is running
+            - name: Verify PM2 Process
+              run: pm2 list

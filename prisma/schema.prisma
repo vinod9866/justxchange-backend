@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+
+// schema.prisma
+
+model Product {
+  productId    Int       @id @default(autoincrement()) @map("product_id")
+  description  String    @map("description")
+  productName  String    @map("product_name")
+  amount       Float     @map("amount")
+  categoryId   Int       @map("category_id")
+  userId       Int       @map("user_id")
+  images       String[] @map("images")
+  condition    String?
+  createdDate  DateTime  @default(now()) @map("created_date")
+  updatedDate  DateTime  @default(now()) @map("updated_date")
+  createdBy    Int       @default(1) @map("created_by")
+  updatedBy    Int       @default(1) @map("updated_by")
+
+  user      User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  category  Category @relation(fields: [categoryId], references: [categoryId], onDelete: Cascade)
+
+  @@map("products")
+}
+
+model Category {
+  categoryId   Int       @id @default(autoincrement()) @map("category_id")
+  categoryName String    @map("category_name")
+  createdDate  DateTime  @default(now()) @map("created_date")
+  updatedDate  DateTime  @default(now()) @map("updated_date")
+  createdBy    Int       @default(1) @map("created_by")
+  updatedBy    Int       @default(1) @map("updated_by")
+
+  products Product[]
+
+  @@map("categories")
+}
+
+model User {
+  userId       Int       @id @default(autoincrement()) @map("user_id")
+  firstName    String    @map("first_name")
+  lastName     String    @map("last_name")
+  email        String    @unique @map("email_address")
+  mobile       String    @unique @map("mobile_number")
+  password     String    @map("password_hash")
+  emailVerified Boolean  @default(false) @map("email_verified")
+  mobileVerified Boolean @default(false) @map("mobile_verified")
+  college      String    @map("college_name")
+  createdDate  DateTime  @default(now()) @map("created_date")
+  updatedDate  DateTime  @default(now()) @map("updated_date")
+  createdBy    Int       @default(1) @map("created_by")
+  updatedBy    Int       @default(1) @map("updated_by")
+
+  products Product[]
+
+  @@map("users")
+}
+
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}

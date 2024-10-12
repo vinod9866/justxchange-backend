@@ -1,4 +1,4 @@
-export interface CommonApiResponse<T> {
+export interface ICommonApiRes<T> {
     hasError: boolean;
     statusMessage: string;
     data?: T; // Optional, as data may not be present in case of an error

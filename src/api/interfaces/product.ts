@@ -1,4 +1,4 @@
-export interface ProductAttributes {
+export interface IProduct {
     productId?: number;
     productName: string;
     description: string;
@@ -6,6 +6,5 @@ export interface ProductAttributes {
     categoryId: number;
     userId: number;
     images?: string[];
-    condition: string;
+    condition: string | null;
 }
-  

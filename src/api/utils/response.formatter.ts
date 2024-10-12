@@ -1,11 +1,11 @@
-import { CommonApiResponse } from '../interfaces/common.api.response';
+import { ICommonApiRes } from '../interfaces';
 
 export const createResponse = <T>(
     hasError: boolean,
     statusMessage: string,
     data?: T,
-    error?: any
-): CommonApiResponse<T> => {
+    error?: any,
+): ICommonApiRes<T> => {
     return {
         hasError,
         statusMessage,
