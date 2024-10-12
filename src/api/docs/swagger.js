@@ -1,7 +1,8 @@
-const swaggerAutogen = require('swagger-autogen')();
+const swaggerAutogen = require('swagger-autogen')({
+    openapi: '3.0.0',
+});
 
 const doc = {
-    openapi: '3.0.0', // Use this for OpenAPI 3.0
     info: {
         version: '1.0.0', // API version
         title: 'User API', // Title of the API
@@ -16,7 +17,7 @@ const doc = {
 };
 
 const outputFile = './swagger-output.json'; // File where swagger will be generated
-const endpointsFiles = ['../../../src/index.ts']; // Your routes files
+const endpointsFiles = ['../../../src/server.ts']; // Your routes files
 
 // Generate the swagger file
 swaggerAutogen(outputFile, endpointsFiles, doc);

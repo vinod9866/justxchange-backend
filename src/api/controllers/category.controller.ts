@@ -1,26 +1,22 @@
 import { Request, Response } from 'express';
 import { categoryService } from '../services/category.service';
 import { categorySchema } from '../validators/category.validator';
-import { createResponse } from '../utils/response.formatter';
 
 export const categoryController = {
     createCategory: async (req: Request, res: Response) => {
         const { error } = categorySchema.validate(req.body);
         if (error) {
-            const response = createResponse(true, error.details[0].message);
+            const response = error.message;
             return res.status(400).json(response);
         }
 
         try {
-            const category = await categoryService.createCategory(req.body);
-            const response = createResponse(
-                false,
-                'Category saved successfully',
-                category,
-            );
+            const { categoryName } = req.body;
+            const category = await categoryService.createCategory(categoryName);
+            const response = category;
             res.status(201).json(response);
         } catch (err: any) {
-            const response = createResponse(true, err.message);
+            const response = err.message;
             res.status(500).json(response);
         }
     },
@@ -28,14 +24,10 @@ export const categoryController = {
     getAllCategories: async (req: Request, res: Response) => {
         try {
             const categories = await categoryService.getAllCategories();
-            const response = createResponse(
-                false,
-                'Saved categories',
-                categories,
-            );
+            const response = categories;
             res.json(response);
         } catch (err: any) {
-            const response = createResponse(true, err.message);
+            const response = err.message;
             res.status(500).json(response);
         }
     },
@@ -46,13 +38,13 @@ export const categoryController = {
                 Number(req.params.id),
             );
             if (!category) {
-                const response = createResponse(true, 'Category not found');
+                const response = 'Category not found';
                 return res.status(404).json(response);
             }
-            const response = createResponse(false, 'Saved category', category);
+            const response = category;
             res.json(response);
         } catch (err: any) {
-            const response = createResponse(true, err.message);
+            const response = err.message;
             res.status(500).json(response);
         }
     },
@@ -60,7 +52,7 @@ export const categoryController = {
     updateCategory: async (req: Request, res: Response) => {
         const { error } = categorySchema.validate(req.body);
         if (error) {
-            const response = createResponse(true, error.details[0].message);
+            const response = error.details[0].message;
             return res.status(400).json(response);
         }
 
@@ -70,17 +62,13 @@ export const categoryController = {
                 req.body,
             );
             if (!category) {
-                const response = createResponse(true, 'Category not found');
+                const response = 'Category not found';
                 return res.status(404).json(response);
             }
-            const response = createResponse(
-                false,
-                'Category updated successfully',
-                category,
-            );
+            const response = 'Category updated successfully';
             res.json(response);
         } catch (err: any) {
-            const response = createResponse(true, err.message);
+            const response = err.message;
             res.status(500).json(response);
         }
     },
@@ -88,13 +76,11 @@ export const categoryController = {
     deleteCategory: async (req: Request, res: Response) => {
         try {
             await categoryService.deleteCategory(Number(req.params.id));
-            const response = createResponse(
-                false,
-                'Category deleted successfully',
-            );
+            const response = 'Category deleted successfully';
+
             res.status(204).json(response);
         } catch (err: any) {
-            const response = createResponse(true, err.message);
+            const response = err.message;
             res.status(500).json(response);
         }
     },

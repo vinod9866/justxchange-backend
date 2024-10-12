@@ -13,6 +13,7 @@
     "paths": {
         "/categories": {
             "post": {
+                "tags": ["Category"],
                 "description": "",
                 "responses": {
                     "201": {
@@ -24,13 +25,62 @@
                     "500": {
                         "description": "Internal Server Error"
                     }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "categoryName": {
+                                        "example": "any"
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             },
             "get": {
+                "tags": ["Category"],
                 "description": "",
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "Saved categories",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Category"
+                                            }
+                                        }
+                                    },
+                                    "xml": {
+                                        "name": "main"
+                                    }
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Category"
+                                            }
+                                        }
+                                    },
+                                    "xml": {
+                                        "name": "main"
+                                    }
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -40,13 +90,16 @@
         },
         "/categories/{id}": {
             "get": {
+                "tags": ["Category"],
                 "description": "",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "string"
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -62,13 +115,16 @@
                 }
             },
             "put": {
+                "tags": ["Category"],
                 "description": "",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "string"
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -87,13 +143,16 @@
                 }
             },
             "delete": {
+                "tags": ["Category"],
                 "description": "",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "string"
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -108,6 +167,7 @@
         },
         "/products": {
             "post": {
+                "tags": ["Product"],
                 "description": "",
                 "responses": {
                     "201": {
@@ -122,6 +182,7 @@
                 }
             },
             "get": {
+                "tags": ["Product"],
                 "description": "",
                 "responses": {
                     "200": {
@@ -135,13 +196,16 @@
         },
         "/products/{id}": {
             "get": {
+                "tags": ["Product"],
                 "description": "",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "string"
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -157,13 +221,16 @@
                 }
             },
             "put": {
+                "tags": ["Product"],
                 "description": "",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "string"
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -179,13 +246,16 @@
                 }
             },
             "delete": {
+                "tags": ["Product"],
                 "description": "",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "string"
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -200,6 +270,7 @@
         },
         "/upload-image": {
             "post": {
+                "tags": ["Image"],
                 "description": "",
                 "responses": {
                     "200": {
@@ -211,6 +282,313 @@
                     "500": {
                         "description": "Internal Server Error"
                     }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Product": {
+                "type": "object",
+                "properties": {
+                    "productId": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "integer"
+                            }
+                        }
+                    },
+                    "description": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "string"
+                            }
+                        }
+                    },
+                    "productName": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "string"
+                            }
+                        }
+                    },
+                    "amount": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "number"
+                            }
+                        }
+                    },
+                    "categoryId": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "integer"
+                            }
+                        }
+                    },
+                    "userId": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "integer"
+                            }
+                        }
+                    },
+                    "images": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "array"
+                            }
+                        }
+                    },
+                    "condition": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "string"
+                            }
+                        }
+                    },
+                    "createdDate": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "string"
+                            }
+                        }
+                    },
+                    "updatedDate": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "string"
+                            }
+                        }
+                    },
+                    "createdBy": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "integer"
+                            }
+                        }
+                    },
+                    "updatedBy": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "integer"
+                            }
+                        }
+                    }
+                },
+                "xml": {
+                    "name": "Product"
+                }
+            },
+            "Category": {
+                "type": "object",
+                "properties": {
+                    "categoryId": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "integer"
+                            }
+                        }
+                    },
+                    "categoryName": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "string"
+                            }
+                        }
+                    },
+                    "createdDate": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "string"
+                            }
+                        }
+                    },
+                    "updatedDate": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "string"
+                            }
+                        }
+                    },
+                    "createdBy": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "integer"
+                            }
+                        }
+                    },
+                    "updatedBy": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "integer"
+                            }
+                        }
+                    }
+                },
+                "xml": {
+                    "name": "Category"
+                }
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "integer"
+                            }
+                        }
+                    },
+                    "firstName": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "string"
+                            }
+                        }
+                    },
+                    "lastName": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "string"
+                            }
+                        }
+                    },
+                    "email": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "string"
+                            }
+                        }
+                    },
+                    "mobile": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "string"
+                            }
+                        }
+                    },
+                    "password": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "string"
+                            }
+                        }
+                    },
+                    "emailVerified": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "boolean"
+                            }
+                        }
+                    },
+                    "mobileVerified": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "boolean"
+                            }
+                        }
+                    },
+                    "college": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "string"
+                            }
+                        }
+                    },
+                    "createdDate": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "string"
+                            }
+                        }
+                    },
+                    "updatedDate": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "string"
+                            }
+                        }
+                    },
+                    "createdBy": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "integer"
+                            }
+                        }
+                    },
+                    "updatedBy": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "integer"
+                            }
+                        }
+                    }
+                },
+                "xml": {
+                    "name": "User"
                 }
             }
         }
