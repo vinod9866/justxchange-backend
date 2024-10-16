@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { productService } from '../services/product.service';
 import { IProduct } from '../interfaces/product';
 import productSchema from '../validators/product.validator';
-import { createResponse } from '../utils/response.formatter';
+import { exceptionMsger } from '../utils/exceptionMsger';
 
 export const productController = {
     // Create a new product
@@ -12,15 +12,16 @@ export const productController = {
         if (error) {
             return res
                 .status(400)
-                .json(createResponse(true, error.details[0].message));
+                .json(exceptionMsger(error.details[0].message));
         }
         try {
             const product: IProduct = await productService.create(req.body);
-            res.status(201).json(
-                createResponse(false, 'Product saved successfully', product),
-            );
-        } catch (err: any) {
-            res.status(500).json(createResponse(true, err.message));
+            res.status(201).json({
+                message: 'Product created successfully',
+                data: product,
+            });
+        } catch (err) {
+            res.status(500).json(exceptionMsger(err));
         }
     },
 
@@ -28,9 +29,9 @@ export const productController = {
     getAllProducts: async (req: Request, res: Response) => {
         try {
             const products: IProduct[] = await productService.getAll();
-            res.json(createResponse(false, 'Saved products', products));
-        } catch (err: any) {
-            res.status(500).json(createResponse(true, err.message));
+            res.json({ data: products });
+        } catch (err) {
+            res.status(500).json(exceptionMsger(err));
         }
     },
 
@@ -43,10 +44,10 @@ export const productController = {
             if (!product)
                 return res
                     .status(404)
-                    .json(createResponse(true, 'Product not found'));
-            res.json(createResponse(false, 'Get saved products', product));
-        } catch (err: any) {
-            res.status(500).json(createResponse(true, err.message));
+                    .json(exceptionMsger('Product not found'));
+            res.json({ data: product });
+        } catch (err) {
+            res.status(500).json(exceptionMsger(err));
         }
     },
 
@@ -60,12 +61,13 @@ export const productController = {
             if (!product)
                 return res
                     .status(404)
-                    .json(createResponse(true, 'Product not found'));
-            res.json(
-                createResponse(false, 'Updated product successfully', product),
-            );
-        } catch (err: any) {
-            res.status(500).json(createResponse(true, err.message));
+                    .json(exceptionMsger('Product not found'));
+            res.json({
+                message: 'Updated product successfully',
+                data: product,
+            });
+        } catch (err) {
+            res.status(500).json(exceptionMsger(err));
         }
     },
 
@@ -73,9 +75,10 @@ export const productController = {
     deleteProduct: async (req: Request, res: Response) => {
         try {
             await productService.delete(Number(req.params.id));
-            res.status(204).json(createResponse(false, 'Product deleted'));
-        } catch (err: any) {
-            res.status(500).json(createResponse(true, err.message));
+            res.status(204).json({ message: 'Product deleted successfully' });
+        } catch (err) {
+            const response = 'Product not found';
+            res.status(500).json(exceptionMsger(response));
         }
     },
 };

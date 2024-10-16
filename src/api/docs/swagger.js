@@ -14,6 +14,21 @@ const doc = {
             url: 'http://localhost:8090', // Your server's URL
         },
     ],
+    components: {
+        schemas: {
+            category: {
+                categoryId: 1,
+                categoryName: 'Electronics',
+                createdDate: '2024-10-01T10:00:00Z',
+                updatedDate: '2024-10-05T10:00:00Z',
+                createdBy: 1,
+                updatedBy: 1,
+            },
+            ErrorResponse: {
+                exceptionMessage: 'string',
+            },
+        },
+    },
 };
 
 const outputFile = './swagger-output.json'; // File where swagger will be generated

@@ -1,4 +1,3 @@
-import { ICategory } from './category';
+import { ICategory, ICategoryRes } from './category';
 import { IProduct } from './product';
-import { ICommonApiRes } from './commonApiRes';
-export { ICategory, IProduct, ICommonApiRes };
+export { ICategory, IProduct };

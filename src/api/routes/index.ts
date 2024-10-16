@@ -2,8 +2,10 @@ import { Router } from 'express';
 import categoryRoutes from './category.routes';
 import productRoutes from './product.routes';
 import imageRoutes from './image.routes';
+import { attachSwaggerResponses } from '../../middleware/response';
 
 const router = Router();
+router.use(attachSwaggerResponses);
 // Public routes (user login/signup...etc routes)
 
 // Protected routes (Require authentication)

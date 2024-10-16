@@ -1,13 +1,14 @@
 import { Request, Response } from 'express';
 import { categoryService } from '../services/category.service';
 import { categorySchema } from '../validators/category.validator';
+import { ICategoryRes } from '../interfaces/category';
+import { exceptionMsger } from '../utils/exceptionMsger';
 
 export const categoryController = {
     createCategory: async (req: Request, res: Response) => {
         const { error } = categorySchema.validate(req.body);
         if (error) {
-            const response = error.message;
-            return res.status(400).json(response);
+            return res.status(400).json(exceptionMsger(error));
         }
 
         try {
@@ -15,37 +16,49 @@ export const categoryController = {
             const category = await categoryService.createCategory(categoryName);
             const response = category;
             res.status(201).json(response);
-        } catch (err: any) {
-            const response = err.message;
-            res.status(500).json(response);
+        } catch (err) {
+            res.status(500).json(exceptionMsger(err));
         }
     },
 
     getAllCategories: async (req: Request, res: Response) => {
+        /* #swagger.responses[200] = {
+            schema: {
+                data: [
+                    { $ref: "#/components/schemas/category" }
+                ]
+            }
+        } */
         try {
-            const categories = await categoryService.getAllCategories();
+            const categories: ICategoryRes[] =
+                await categoryService.getAllCategories();
             const response = categories;
-            res.json(response);
-        } catch (err: any) {
-            const response = err.message;
-            res.status(500).json(response);
+            res.status(200).json(response);
+        } catch (err) {
+            res.status(500).json(exceptionMsger(err));
         }
     },
 
     getCategoryById: async (req: Request, res: Response) => {
+        /* #swagger.responses[200] = {
+            schema: {
+                data: 
+                    { $ref: "#/components/schemas/category" }
+                
+            }
+        } */
         try {
             const category = await categoryService.getCategoryById(
                 Number(req.params.id),
             );
             if (!category) {
                 const response = 'Category not found';
-                return res.status(404).json(response);
+                return res.status(404).json(exceptionMsger(response));
             }
             const response = category;
             res.json(response);
-        } catch (err: any) {
-            const response = err.message;
-            res.status(500).json(response);
+        } catch (err) {
+            res.status(500).json(exceptionMsger(err));
         }
     },
 
@@ -53,7 +66,7 @@ export const categoryController = {
         const { error } = categorySchema.validate(req.body);
         if (error) {
             const response = error.details[0].message;
-            return res.status(400).json(response);
+            return res.status(400).json(exceptionMsger(response));
         }
 
         try {
@@ -63,13 +76,12 @@ export const categoryController = {
             );
             if (!category) {
                 const response = 'Category not found';
-                return res.status(404).json(response);
+                return res.status(404).json(exceptionMsger(response));
             }
             const response = 'Category updated successfully';
             res.json(response);
-        } catch (err: any) {
-            const response = err.message;
-            res.status(500).json(response);
+        } catch (err) {
+            res.status(500).json(exceptionMsger(err));
         }
     },
 
@@ -79,9 +91,9 @@ export const categoryController = {
             const response = 'Category deleted successfully';
 
             res.status(204).json(response);
-        } catch (err: any) {
-            const response = err.message;
-            res.status(500).json(response);
+        } catch (err) {
+            const response = 'Category not found';
+            res.status(500).json(exceptionMsger(response));
         }
     },
 };
