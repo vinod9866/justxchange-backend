@@ -1,10 +1,10 @@
 export interface ICategory {
-    categoryId?: number;
+    id?: string;
     categoryName: string;
 }
 
 export interface ICategoryRes {
-    categoryId: number;
+    id: string;
     categoryName: string;
     createdDate: Date;
     updatedDate: Date;

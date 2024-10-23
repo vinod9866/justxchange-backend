@@ -1,8 +1,9 @@
 -- CreateTable
 CREATE TABLE "products" (
+    "id" UUID NOT NULL,
     "product_id" SERIAL NOT NULL,
-    "description" TEXT NOT NULL,
-    "product_name" TEXT NOT NULL,
+    "description" VARCHAR(255) NOT NULL,
+    "product_name" VARCHAR(50) NOT NULL,
     "amount" DOUBLE PRECISION NOT NULL,
     "category_id" INTEGER NOT NULL,
     "user_id" INTEGER NOT NULL,
@@ -18,8 +19,9 @@ CREATE TABLE "products" (
 
 -- CreateTable
 CREATE TABLE "categories" (
+    "id" UUID NOT NULL,
     "category_id" SERIAL NOT NULL,
-    "category_name" TEXT NOT NULL,
+    "category_name" VARCHAR(50) NOT NULL,
     "created_date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" INTEGER NOT NULL DEFAULT 1,
@@ -30,15 +32,16 @@ CREATE TABLE "categories" (
 
 -- CreateTable
 CREATE TABLE "users" (
+    "id" UUID NOT NULL,
     "user_id" SERIAL NOT NULL,
-    "first_name" TEXT NOT NULL,
-    "last_name" TEXT NOT NULL,
-    "email_address" TEXT NOT NULL,
-    "mobile_number" TEXT NOT NULL,
+    "first_name" VARCHAR(50) NOT NULL,
+    "last_name" VARCHAR(50) NOT NULL,
+    "email_address" VARCHAR(50) NOT NULL,
+    "mobile_number" VARCHAR(15) NOT NULL,
     "password_hash" TEXT NOT NULL,
     "email_verified" BOOLEAN NOT NULL DEFAULT false,
     "mobile_verified" BOOLEAN NOT NULL DEFAULT false,
-    "college_name" TEXT NOT NULL,
+    "college_name" VARCHAR(200) NOT NULL,
     "created_date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" INTEGER NOT NULL DEFAULT 1,
@@ -46,6 +49,15 @@ CREATE TABLE "users" (
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("user_id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "products_id_key" ON "products"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "categories_id_key" ON "categories"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_id_key" ON "users"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_address_key" ON "users"("email_address");

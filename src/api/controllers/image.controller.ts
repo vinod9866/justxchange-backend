@@ -4,6 +4,30 @@ import { exceptionMsger } from '../utils/exceptionMsger';
 
 const imageController = {
     uploadImage: async (req: Request, res: Response) => {
+        /* #swagger.responses[200] = {
+            schema: {
+                message: 'File uploaded successfully',
+                imageUrl: 'imageUrl'
+            }
+        } */
+
+        /* #swagger.requestBody = {
+            required: true,
+            content: {
+                "multipart/form-data": {
+                    schema: {
+                        type: "object",
+                        properties: {
+                            file: { 
+                                type: "string", 
+                                format: "binary" 
+                            }
+                        }
+                    }
+                }
+            }
+        } */
+
         try {
             if (!req.file) {
                 const response = 'No file uploaded';

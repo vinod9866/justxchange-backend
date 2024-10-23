@@ -8,6 +8,14 @@ import { exceptionMsger } from '../utils/exceptionMsger';
 export const productController = {
     // Create a new product
     createProduct: async (req: Request, res: Response) => {
+        /* #swagger.responses[200] = {
+            schema: {
+                message: 'Product created successfully',
+                data: [
+                    { $ref: "#/components/schemas/product" }
+                ]
+            }
+        } */
         const { error } = await productSchema.validateAsync(req.body);
         if (error) {
             return res
@@ -27,6 +35,13 @@ export const productController = {
 
     // Get all products
     getAllProducts: async (req: Request, res: Response) => {
+        /* #swagger.responses[200] = {
+            schema: {
+                data: [
+                    { $ref: "#/components/schemas/product" }
+                ]
+            }
+        } */
         try {
             const products: IProduct[] = await productService.getAll();
             res.json({ data: products });
@@ -37,6 +52,13 @@ export const productController = {
 
     // Get a product by ID
     getProductById: async (req: Request, res: Response) => {
+        /* #swagger.responses[200] = {
+            schema: {
+                data: 
+                    { $ref: "#/components/schemas/product" }
+                
+            }
+        } */
         try {
             const product: IProduct | null = await productService.getById(
                 Number(req.params.id),
@@ -53,6 +75,14 @@ export const productController = {
 
     // Update a product by ID
     updateProduct: async (req: Request, res: Response) => {
+        /* #swagger.responses[200] = {
+            schema: {
+                message: 'Updated product successfully',
+                data: 
+                    { $ref: "#/components/schemas/product" }
+                
+            }
+        } */
         try {
             const product: IProduct | null = await productService.update(
                 Number(req.params.id),
