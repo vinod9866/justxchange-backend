@@ -8,14 +8,14 @@
 // schema.prisma
 
 model Product {
-  id String   @unique @default(uuid()) @db.Uuid
+  id String   @unique    @default(uuid()) @db.Uuid
   productId    Int       @id @default(autoincrement()) @map("product_id")
-  description String @map("description") @db.VarChar(255)
+  description String     @map("description") @db.VarChar(255)
   productName  String    @map("product_name") @db.VarChar(50)
   amount       Float     @map("amount")
   categoryId   Int       @map("category_id")
   userId       Int       @map("user_id")
-  images       String[] @map("images")
+  images       String[]  @map("images")
   condition    String?
   createdDate  DateTime  @default(now()) @map("created_date")
   updatedDate  DateTime  @default(now()) @map("updated_date")
@@ -24,7 +24,10 @@ model Product {
 
   user      User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
   category  Category @relation(fields: [categoryId], references: [categoryId], onDelete: Cascade)
-
+  
+  userTransactoin UserTransaction[]
+  productFovourite  ProductFovourite[]
+  chat Chat[]
   @@map("products")
 }
 
@@ -38,7 +41,7 @@ model Category {
   updatedBy    Int       @default(1) @map("updated_by")
 
   products Product[]
-
+  categoryFovourite CategoryFovourite[]
   @@map("categories")
 }
 
@@ -47,8 +50,8 @@ model User {
   userId       Int       @id @default(autoincrement()) @map("user_id")
   firstName    String    @map("first_name") @db.VarChar(50)
   lastName     String    @map("last_name") @db.VarChar(50)
-  email        String    @unique @map("email_address") @db.VarChar(50)
-  mobile       String    @unique @map("mobile_number") @db.VarChar(15)
+  email        String    @unique @map("email") @db.VarChar(50)
+  mobileNumber String    @unique @map("mobile_number") @db.VarChar(15)
   password     String    @map("password_hash")
   emailVerified Boolean  @default(false) @map("email_verified")
   mobileVerified Boolean @default(false) @map("mobile_verified")
@@ -59,8 +62,93 @@ model User {
   updatedBy    Int       @default(1) @map("updated_by")
 
   products Product[]
-
+  address Address[]
+  userTransactoin UserTransaction[]
+  categoryFovourite CategoryFovourite[]
+  productFovourite  ProductFovourite[]
+  chat Chat[]
+  message Message[]
   @@map("users")
+}
+
+model Address {
+  id           String   @unique @default(uuid()) @db.Uuid
+  addressId    Int      @id @default(autoincrement()) @map("address_id")
+  address      String   
+  mobileNumber String   @map("mobile_number") @db.VarChar(15)
+  user         User     @relation(fields: [userId], references: [userId])
+  userId       Int      @map("user_id")
+  createdDate  DateTime  @default(now()) @map("created_date")
+  updatedDate  DateTime  @default(now()) @map("updated_date")
+
+  @@map("addresses")
+}
+
+model CategoryFovourite{
+  id           String   @unique @default(uuid()) @db.Uuid
+  category_favourite_id Int      @id @default(autoincrement()) @map("category_favourite_id")
+  category     Category @relation(fields: [categoryId], references: [categoryId])
+  categoryId   Int      @map("category_id")
+  user         User     @relation(fields: [userId], references: [userId])
+  userId       Int      @map("user_id")
+  createdDate  DateTime @default(now()) @map("created_date")
+  updatedDate  DateTime @default(now()) @map("updated_date")
+
+  @@map("category_favourites")
+}
+
+model ProductFovourite{
+  id           String   @unique @default(uuid()) @db.Uuid
+  product_favourite_id  Int      @id @default(autoincrement()) @map("product_favourite_id")
+  product      Product  @relation(fields: [productId], references: [productId])
+  productId    Int      @map("product_id")
+  user         User     @relation(fields: [userId], references: [userId])
+  userId       Int      @map("user_id")
+  createdDate  DateTime @default(now()) @map("created_date")
+  updatedDate  DateTime @default(now()) @map("updated_date")
+
+  @@map("product_favourites")
+}
+
+model UserTransaction{
+  id           String   @unique @default(uuid()) @db.Uuid
+  transactionId Int     @id @default(autoincrement()) @map("transaction_id")
+  product      Product  @relation(fields: [productId], references: [productId])
+  productId    Int      @map("product_id")
+  user         User     @relation(fields: [userId], references: [userId])
+  userId       Int      @map("user_id")
+  createdDate  DateTime @default(now()) @map("created_date")
+  updatedDate  DateTime @default(now()) @map("updated_date")
+
+  @@map("user_transactions")
+}
+
+model Chat{
+  id           String   @unique @default(uuid()) @db.Uuid
+  chatId       Int      @id @default(autoincrement()) @map("chat_id")
+  product      Product  @relation(fields: [productId], references: [productId])
+  productId    Int      @map("product_id")
+  buyer        User     @relation(fields: [buyerId], references: [userId])
+  buyerId      Int      @map("user_id")
+  createdDate  DateTime  @default(now()) @map("created_date")
+  updatedDate  DateTime  @default(now()) @map("updated_date")
+
+  message Message[]
+  @@map("chats")
+}
+
+model Message{
+  id           String   @unique @default(uuid()) @db.Uuid
+  message      String
+  messageId    Int      @id @default(autoincrement()) @map("message_id")
+  chat         Chat     @relation(fields: [chatId], references: [chatId])
+  chatId       Int      @map("chat_id")
+  user         User     @relation(fields: [userId], references: [userId])
+  userId       Int      @map("user_id")
+  createdDate  DateTime @default(now()) @map("created_date")
+  updatedDate  DateTime @default(now()) @map("updated_date")
+
+  @@map("messages")
 }
 
 

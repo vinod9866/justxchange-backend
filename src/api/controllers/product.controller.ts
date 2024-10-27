@@ -1,6 +1,6 @@
 // src/controllers/productController.ts
 import { Request, Response } from 'express';
-import { productService } from '../services/product.service';
+import { productService } from '../services';
 import { IProduct } from '../interfaces/product';
 import productSchema from '../validators/product.validator';
 import { exceptionMsger } from '../utils/exceptionMsger';

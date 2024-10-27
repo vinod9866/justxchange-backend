@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { categoryService } from '../services/category.service';
+import { categoryService } from '../services';
 import { categorySchema } from '../validators/category.validator';
 import { ICategory, ICategoryRes } from '../interfaces/category';
 import { exceptionMsger } from '../utils/exceptionMsger';
