@@ -48,18 +48,20 @@ model Category {
 model User {
   id           String   @unique @default(uuid()) @db.Uuid
   userId       Int       @id @default(autoincrement()) @map("user_id")
-  firstName    String    @map("first_name") @db.VarChar(50)
-  lastName     String    @map("last_name") @db.VarChar(50)
-  email        String    @unique @map("email") @db.VarChar(50)
+  firstName    String?    @map("first_name") @db.VarChar(50)
+  lastName     String?    @map("last_name") @db.VarChar(50)
+  email        String?    @unique @map("email") @db.VarChar(50)
   mobileNumber String    @unique @map("mobile_number") @db.VarChar(15)
-  password     String    @map("password_hash")
+  password     String?    @map("password")
   emailVerified Boolean  @default(false) @map("email_verified")
   mobileVerified Boolean @default(false) @map("mobile_verified")
-  college      String    @map("college_name") @db.VarChar(200)
+  college      String?    @map("college_name") @db.VarChar(200)
   createdDate  DateTime  @default(now()) @map("created_date")
   updatedDate  DateTime  @default(now()) @map("updated_date")
   createdBy    Int       @default(1) @map("created_by")
   updatedBy    Int       @default(1) @map("updated_by")
+  otp          String?   @map("otp")
+  otpExpiry    DateTime? @map("otp_expiry")
 
   products Product[]
   address Address[]
