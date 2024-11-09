@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { ICategory } from '../interfaces';
+import logger from '../../config/logger';
 
 const prisma = new PrismaClient();
 
@@ -12,6 +13,7 @@ export const categoryService = {
     },
 
     getAllCategories: async () => {
+        logger.info("get all categories")
         return await prisma.category.findMany();
     },
 
