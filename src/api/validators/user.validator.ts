@@ -30,11 +30,11 @@ export const userSchema = Joi.object({
 });
 
 export const loginSchema = Joi.object({
-    email: Joi.string().email().trim().required().messages({
-        'string.email': 'Email must be valid',
-        'string.empty': 'Email is required',
-        'any.required': 'Email is required',
-    }),
+    // email: Joi.string().email().trim().required().messages({
+    //     'string.email': 'Email must be valid',
+    //     'string.empty': 'Email is required',
+    //     'any.required': 'Email is required',
+    // }),
     mobileNumber: Joi.string().trim().required().messages({
         'string.empty': 'Mobile number is required',
         'any.required': 'Mobile number is required',
@@ -43,5 +43,5 @@ export const loginSchema = Joi.object({
         'string.min': 'Password must be at least 6 characters long',
         'string.empty': 'Password is required',
         'any.required': 'Password is required',
-    })
+    }),
 });

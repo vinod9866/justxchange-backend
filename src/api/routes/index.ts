@@ -24,6 +24,6 @@ router.use(chatRoutes /* #swagger.tags = ['Chats'] */);
 
 router.use(favouriteRoutes /* #swagger.tags = ['Favourites'] */);
 
-router.use(userRoutes /* #swagger.tags = ['Sms'] */);
+router.use(userRoutes /* #swagger.tags = ['Users'] */);
 
 export default router;

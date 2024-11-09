@@ -1,8 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import { smsService } from './sms.service';
 import { IVerifyOtp } from '../interfaces';
-import { IUser } from '../interfaces/user';
+import { IUser, IUserLoginIn } from '../interfaces/user';
 import { generateToken } from './auth.service';
+import { comparePassword, hashPassword } from '../utils/auth';
 
 const prisma = new PrismaClient();
 
@@ -38,60 +39,99 @@ export const userService = {
         }
     },
 
-    verifyOtp : async (body: IVerifyOtp) => {
+    verifyOtp: async (body: IVerifyOtp) => {
         const { mobileNumber, otp } = body;
-      
-        try {
-            const user = await prisma.user.findUnique({where: { mobileNumber }});
 
-            if(!user){
-                throw new Error("Mobile number not found")
+        try {
+            const user = await prisma.user.findUnique({
+                where: { mobileNumber },
+            });
+
+            if (!user) {
+                throw new Error('Mobile number not found');
             }
-      
+
             if (user.otp !== otp) {
-                throw new Error("Ivalid Otp");
+                throw new Error('Ivalid Otp');
             }
-      
+
             if (user.otpExpiry && user.otpExpiry < new Date()) {
                 throw new Error('OTP has expired.');
             }
-      
+
             await prisma.user.update({
                 where: { mobileNumber },
                 data: { mobileVerified: true, otp: null, otpExpiry: null },
             });
-      
-            return 'OTP verified successfully.'
+
+            return 'OTP verified successfully.';
         } catch (error) {
             console.error('Error verifying OTP:', error);
             throw error;
         }
     },
 
-    saveUser : async (body: IUser) => {      
+    saveUser: async (body: IUser) => {
         try {
-            const user = await prisma.user.findUnique({where: { mobileNumber : body.mobileNumber }});
+            const user = await prisma.user.findUnique({
+                where: { mobileNumber: body.mobileNumber },
+            });
 
-            if(!user){
-                throw new Error("Mobile number not found")
+            if (!user) {
+                throw new Error('Mobile number not found');
             }
-      
+
             if (!user.mobileVerified) {
-                throw new Error("Mobile number not verified");
+                throw new Error('Mobile number not verified');
             }
-      
+            const hashedPassword = await hashPassword(body.password);
             await prisma.user.update({
                 where: { mobileNumber: body.mobileNumber },
-                data: { firstName: body.firstName, lastName: body.lastName, college: body.college, email: body.email },
+                data: {
+                    firstName: body.firstName,
+                    lastName: body.lastName,
+                    college: body.college,
+                    email: body.email,
+                    password: hashedPassword,
+                },
             });
 
             const token = generateToken(user.userId);
-      
-            return { token }
+
+            return { token };
         } catch (error) {
             console.error('Error saving user:', error);
             throw error;
         }
     },
-      
+
+    loginUser: async (body: IUserLoginIn) => {
+        try {
+            const user = await prisma.user.findUnique({
+                where: { mobileNumber: body.mobileNumber },
+            });
+
+            if (!user) {
+                throw new Error('Mobile number not found');
+            }
+
+            if (!user.mobileVerified) {
+                throw new Error('Mobile number not verified');
+            }
+
+            const hashedPassword = await hashPassword(body.password);
+            const isVerified = comparePassword(body.password, hashedPassword);
+
+            if (!isVerified) {
+                throw new Error('Invalid User password');
+            }
+
+            const token = generateToken(user.userId);
+
+            return { token };
+        } catch (error) {
+            console.error('Error login user:', error);
+            throw error;
+        }
+    },
 };

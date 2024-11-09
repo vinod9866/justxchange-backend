@@ -3,8 +3,8 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import routes from './api/routes';
 import cors from 'cors';
-import logger from './config/logger';
 import morgan from 'morgan';
+import logger from './config/Logger';
 
 const swaggerDocument = require('./api/docs/swagger-output.json');
 const swaggerUi = require('swagger-ui-express');
@@ -26,7 +26,9 @@ const corsOptions = {
 // Use CORS middleware
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
+app.use(
+    morgan(':method :url :status :res[content-length] - :response-time ms'),
+);
 
 // Middleware to log response body
 app.use((req, res, next) => {
