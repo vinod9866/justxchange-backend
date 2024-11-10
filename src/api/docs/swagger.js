@@ -19,10 +19,6 @@ const doc = {
             category: {
                 id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
                 categoryName: 'Electronics',
-                createdDate: '2024-10-01T10:00:00Z',
-                updatedDate: '2024-10-05T10:00:00Z',
-                createdBy: 1,
-                updatedBy: 1,
             },
 
             product: {

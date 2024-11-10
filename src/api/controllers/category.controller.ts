@@ -58,7 +58,7 @@ export const categoryController = {
         } */
         try {
             const category = await categoryService.getCategoryById(
-                Number(req.params.id),
+                req.params.id,
             );
             if (!category) {
                 const response = 'Category not found';
@@ -86,8 +86,8 @@ export const categoryController = {
         try {
             const { categoryName } = req.body;
             const category = await categoryService.updateCategory(
-                Number(req.params.id),
-                categoryName,
+                req.params.id,
+                { categoryName },
             );
             if (!category) {
                 const response = 'Category not found';
@@ -101,16 +101,16 @@ export const categoryController = {
     },
 
     deleteCategory: async (req: Request, res: Response) => {
-        /* #swagger.responses[204] = {
+        /* #swagger.responses[200] = {
             schema: {
                 message: 'Category deleted successfully'
             }
         } */
         try {
-            await categoryService.deleteCategory(Number(req.params.id));
+            await categoryService.deleteCategory(req.params.id);
             const response = 'Category deleted successfully';
 
-            res.status(204).json({ message: response });
+            res.status(200).json({ message: response });
         } catch (err) {
             const response = 'Category not found';
             res.status(500).json(exceptionMsger(response));

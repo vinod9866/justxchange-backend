@@ -5,6 +5,13 @@ const prisma = new PrismaClient();
 
 export const categoryService = {
     createCategory: async (categoryData: ICategory) => {
+        const existingCategory = await prisma.category.findFirst({
+            where: { categoryName: categoryData.categoryName },
+        });
+
+        if (existingCategory) {
+            throw new Error('Category name already exists.');
+        }
         const category = await prisma.category.create({
             data: categoryData,
         });
@@ -12,25 +19,28 @@ export const categoryService = {
     },
 
     getAllCategories: async () => {
-        return await prisma.category.findMany();
-    },
-
-    getCategoryById: async (id: number) => {
-        return await prisma.category.findUnique({
-            where: { categoryId: id },
+        return await prisma.category.findMany({
+            select: { id: true, categoryName: true },
         });
     },
 
-    updateCategory: async (id: number, categoryData: any) => {
+    getCategoryById: async (id: string) => {
+        return await prisma.category.findUnique({
+            where: { id: id },
+            select: { id: true, categoryName: true },
+        });
+    },
+
+    updateCategory: async (id: string, categoryData: ICategory) => {
         return await prisma.category.update({
-            where: { categoryId: id },
+            where: { id: id },
             data: categoryData,
         });
     },
 
-    deleteCategory: async (id: number) => {
+    deleteCategory: async (id: string) => {
         await prisma.category.delete({
-            where: { categoryId: id },
+            where: { id: id },
         });
     },
 };
