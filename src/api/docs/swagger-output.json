@@ -519,6 +519,20 @@
               }
             }
           }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
         }
       },
       "get": {
@@ -1433,7 +1447,7 @@
     "/signup/{mobileNumber}": {
       "get": {
         "tags": [
-          "Sms"
+          "Users"
         ],
         "description": "",
         "parameters": [
@@ -1486,7 +1500,7 @@
     "/verify-otp": {
       "post": {
         "tags": [
-          "Sms"
+          "Users"
         ],
         "description": "",
         "responses": {
@@ -1529,7 +1543,7 @@
     "/save-user": {
       "post": {
         "tags": [
-          "Sms"
+          "Users"
         ],
         "description": "",
         "responses": {
@@ -1572,7 +1586,7 @@
     "/login-user": {
       "post": {
         "tags": [
-          "Sms"
+          "Users"
         ],
         "description": "",
         "responses": {

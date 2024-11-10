@@ -14,7 +14,11 @@ export const categoryService = {
 
     getAllCategories: async () => {
         logger.info('get all categories');
-        return await prisma.category.findMany();
+        return await prisma.category.findMany({
+            orderBy: {
+                categoryName: 'asc',
+            },
+        });
     },
 
     getCategoryById: async (id: number) => {
