@@ -2,6 +2,9 @@ import { Router } from 'express';
 import categoryRoutes from './category.routes';
 import productRoutes from './product.routes';
 import imageRoutes from './image.routes';
+import chatRoutes from './chats.routes';
+import favouriteRoutes from './favourites.routes';
+import userRoutes from './user.routes';
 import { attachSwaggerResponses } from '../../middleware/response';
 
 const router = Router();
@@ -16,5 +19,11 @@ router.use(categoryRoutes /* #swagger.tags = ['Category']  */);
 router.use(productRoutes /* #swagger.tags = ['Product'] */);
 
 router.use(imageRoutes /* #swagger.tags = ['Image'] */);
+
+router.use(chatRoutes /* #swagger.tags = ['Chats'] */);
+
+router.use(favouriteRoutes /* #swagger.tags = ['Favourites'] */);
+
+router.use(userRoutes /* #swagger.tags = ['Users'] */);
 
 export default router;

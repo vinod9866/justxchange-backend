@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { s3Service } from '../services/s3.service';
+import { s3Service } from '../services';
 import { exceptionMsger } from '../utils/exceptionMsger';
 
 const imageController = {

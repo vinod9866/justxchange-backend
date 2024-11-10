@@ -3,6 +3,8 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import routes from './api/routes';
 import cors from 'cors';
+import morgan from 'morgan';
+import logger from './config/Logger';
 
 const swaggerDocument = require('./api/docs/swagger-output.json');
 const swaggerUi = require('swagger-ui-express');
@@ -24,7 +26,19 @@ const corsOptions = {
 // Use CORS middleware
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+    morgan(':method :url :status :res[content-length] - :response-time ms'),
+);
 
+// Middleware to log response body
+app.use((req, res, next) => {
+    const originalSend = res.send;
+    res.send = function (body) {
+        console.log(`Response for ${req.method} ${req.originalUrl}:`, body);
+        return originalSend.apply(res, [body]);
+    };
+    next();
+});
 // Routes
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(routes);
@@ -35,6 +49,10 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     res.status(500).send('Something went wrong!');
     console.error(err.stack);
     res.status(500).send('Something went wrong!');
+});
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    logger.error(`Error occurred in ${req.method} ${req.url}: ${err.message}`);
+    res.status(500).send('Internal Server Error');
 });
 
 // Initialize models and then start the server

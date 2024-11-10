@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import imageController from '../controllers/image.controller';
 import multer from 'multer';
+import { imageController } from '../controllers';
 
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
